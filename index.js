@@ -108,7 +108,7 @@ domSelectors.searchForm.addEventListener('submit', (event) => {
     const reformattedName = artistName.replaceAll(' ', '+')
     console.log(reformattedName)
 
-    // domSelectors.loader.classList.add("display")
+    displayLoading()
     console.log(domSelectors.loader.classList)
 
     fetchAlbum(reformattedName).then(albumJson => {
@@ -117,6 +117,7 @@ domSelectors.searchForm.addEventListener('submit', (event) => {
         console.log(albums, albumCount)
         renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
     })
+    .then(result => hideLoading())
 
     // domSelectors.loader.classList.remove("display")
 });
