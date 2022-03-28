@@ -74,6 +74,7 @@ scrollEvents()
 
 // onchange event for input (Utilize later and replace onSubmit)
 function searchEvent() {
+    
     domSelectors.searchInput.addEventListener('change', (event) => {
         event.preventDefault()
     
@@ -81,7 +82,8 @@ function searchEvent() {
         const reformattedName = artistName.replaceAll(' ', '+')
         console.log(reformattedName)
     
-        domSelectors.loader.innerHTML = `<div class="lds-dual-ring"></div>`
+        // domSelectors.loader.classList.add("display")
+        displayLoading()
         // domSelectors.loader.style.display = "inline"
     
         fetchAlbum(reformattedName).then(albumJson => {
@@ -90,8 +92,9 @@ function searchEvent() {
             console.log(albums, albumCount)
             renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
         })
+        .then(result => hideLoading())
     
-        domSelectors.loader.innerHTML = ''
+        // domSelectors.loader.classList.remove("display")
     });
 }
 searchEvent()
@@ -105,7 +108,8 @@ domSelectors.searchForm.addEventListener('submit', (event) => {
     const reformattedName = artistName.replaceAll(' ', '+')
     console.log(reformattedName)
 
-    // loader.style.display = "inline"
+    // domSelectors.loader.classList.add("display")
+    console.log(domSelectors.loader.classList)
 
     fetchAlbum(reformattedName).then(albumJson => {
         const albums = albumJson.results
@@ -114,7 +118,15 @@ domSelectors.searchForm.addEventListener('submit', (event) => {
         renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
     })
 
-    // loader.style.display = "none"
+    // domSelectors.loader.classList.remove("display")
 });
 
 // make function to show count 
+
+function displayLoading() {
+    domSelectors.loader.classList.add("display");
+}
+
+function hideLoading() {
+    domSelectors.loader.classList.remove("display");
+}

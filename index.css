@@ -57,6 +57,8 @@ nav button {
     scroll-behavior: smooth;
     scrollbar-width: none;
     display: flex;
+
+
 }
 
 #carousel::-webkit-scrollbar {
@@ -95,9 +97,12 @@ nav button {
 
 #content {
     display: flex;
-    grid-auto-flow: column;
+    /* flex-wrap: wrap; */
+    justify-content: space-between;
+    /* grid-auto-flow: column; */
     width: 100%;
     margin: auto;
+    /* height: 300px; */
 }
 
 .item {
@@ -122,12 +127,19 @@ nav button {
   }
 
   .loader-container {
+      display: flex;
+      justify-content: center;
       width: 10%;
       /* background-color: black; */
       height: 50px;
       margin-bottom: 1em;
 
       border-bottom: 5px sollid rgb(0, 0, 0);
+      visibility: hidden;
+  }
+
+  .loader-container.display {
+    visibility: visible;
   }
 
 .loader {
@@ -140,6 +152,7 @@ nav button {
     /* Safari */
     animation: spin 2s linear infinite;
     display: none;
+    
 }
 
 /* Safari */
@@ -187,3 +200,15 @@ nav button {
       transform: rotate(360deg);
     }
   }
+
+
+  @media (max-width: 768px) {
+    .item p {
+        font-size: .5em;
+    }
+
+    .item {
+        /* padding: 1rem 0 1rem 0; */
+        width: 100%;
+    }
+}
