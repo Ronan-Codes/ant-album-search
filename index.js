@@ -92,8 +92,8 @@ function searchEvent() {
         const reformattedName = artistName.replaceAll(' ', '+')
         console.log(reformattedName)
     
-        // domSelectors.loader.innerHTML = loaderTemplate
-        domSelectors.loader.style.display = "inline"
+        domSelectors.loader.innerHTML = `<div class="lds-dual-ring"></div>`
+        // domSelectors.loader.style.display = "inline"
     
         fetchAlbum(reformattedName).then(albumJson => {
             const albums = albumJson.results
@@ -102,30 +102,30 @@ function searchEvent() {
             renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
         })
     
-        domSelectors.loader.style.display = "none"
+        domSelectors.loader.innerHTML = ''
     });
 }
 searchEvent()
 
 
 // Optimize later with on change.. AND event delegation
-// domSelectors.searchForm.addEventListener('submit', (event) => {
-//     event.preventDefault()
+domSelectors.searchForm.addEventListener('submit', (event) => {
+    event.preventDefault()
 
-//     const artistName = domSelectors.searchInput.value
-//     const reformattedName = artistName.replaceAll(' ', '+')
-//     console.log(reformattedName)
+    const artistName = domSelectors.searchInput.value
+    const reformattedName = artistName.replaceAll(' ', '+')
+    console.log(reformattedName)
 
-//     loader.style.display = "inline"
+    // loader.style.display = "inline"
 
-//     fetchAlbum(reformattedName).then(albumJson => {
-//         const albums = albumJson.results
-//         const albumCount = albumJson.resultCount
-//         console.log(albums, albumCount)
-//         renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
-//     })
+    fetchAlbum(reformattedName).then(albumJson => {
+        const albums = albumJson.results
+        const albumCount = albumJson.resultCount
+        console.log(albums, albumCount)
+        renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
+    })
 
-//     loader.style.display = "none"
-// });
+    // loader.style.display = "none"
+});
 
 // make function to show count 
