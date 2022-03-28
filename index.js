@@ -6,7 +6,6 @@ const domSelectors = {
   next: document.getElementById("next"),
   prev: document.getElementById("prev"),
   searchInput: document.getElementById("searchInput"),
-//   searchBtn: document.getElementById("searchBtn"),
   loader: document.querySelector(".loader-container"),
   searchForm: document.getElementById("searchForm")
 }
@@ -14,7 +13,6 @@ const domSelectors = {
 const loaderTemplate = `<div id="loader" class="loader"></div>`
 
 let width = domSelectors.carousel.offsetWidth;
-// window.addEventListener("resize", e => (width = domSelectors.carousel.offsetWidth));
 
 function scrollEvents() {
     domSelectors.next.addEventListener("click", e => {
@@ -46,10 +44,8 @@ function scrollEvents() {
 // 
 
 function fetchAlbum(artist) {
-//     return fetchJsonp('https://itunes.apple.com/lookup?id=979458609&entity=album')
     return fetch(`https://itunes.apple.com/search?term=${artist}&media=music&entity=album&attribute=artistTerm&limit=200`)
         .then(res => res.json())
-            // .then(json => console.log(json.results));
 }
 
 
@@ -82,9 +78,7 @@ function searchEvent() {
         const reformattedName = artistName.replaceAll(' ', '+')
         console.log(reformattedName)
     
-        // domSelectors.loader.classList.add("display")
         displayLoading()
-        // domSelectors.loader.style.display = "inline"
     
         fetchAlbum(reformattedName).then(albumJson => {
             const albums = albumJson.results
@@ -93,8 +87,6 @@ function searchEvent() {
             renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
         })
         .then(result => hideLoading())
-    
-        // domSelectors.loader.classList.remove("display")
     });
 }
 searchEvent()
@@ -118,8 +110,6 @@ domSelectors.searchForm.addEventListener('submit', (event) => {
         renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
     })
     .then(result => hideLoading())
-
-    // domSelectors.loader.classList.remove("display")
 });
 
 // make function to show count 
