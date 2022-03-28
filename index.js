@@ -52,13 +52,7 @@ function fetchAlbum(artist) {
             // .then(json => console.log(json.results));
 }
 
-// function fetchAlbum() {
-//     return fetch("https://itunes.apple.com/search?term=${jack+johnson}&media=music&entity=album&attribute=artistTerm&limit=200")
-//         .then((response) => 
-//         // response.json()
-//         console.log(response.json())
-//         )
-// }
+
 
 function createTemplateFromAlbumArr(albumArr, count){
     return albumArr.map(album => {
@@ -74,12 +68,7 @@ function renderTemplate(element, template) {
   element.innerHTML = template
 }
 
-// fetchAlbum().then(albumJson => {
-//     const albums = albumJson.results
-//     const albumCount = albumJson.resultCount
-//     console.log(albums, albumCount)
-//     renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
-// })
+
 
 scrollEvents()
 
