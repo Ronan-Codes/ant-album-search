@@ -94,14 +94,14 @@ nav button {
 }
 
 #content {
-    display: grid;
+    display: flex;
     grid-auto-flow: column;
     width: 100%;
     margin: auto;
 }
 
 .item {
-    width: 250px;
+    width: 25%;
     background: rgb(19, 51, 26);
     background: rgb(0, 123, 184);
     padding: 1rem;
