@@ -4,8 +4,14 @@ const domSelectors = {
   carousel: document.getElementById("carousel"),
   content: document.getElementById("content"),
   next: document.getElementById("next"),
-  prev: document.getElementById("prev")
+  prev: document.getElementById("prev"),
+  searchInput: document.getElementById("searchInput"),
+//   searchBtn: document.getElementById("searchBtn"),
+  loader: document.querySelector(".loader-container"),
+  searchForm: document.getElementById("searchForm")
 }
+
+const loaderTemplate = `<div id="loader" class="loader"></div>`
 
 let width = domSelectors.carousel.offsetWidth;
 // window.addEventListener("resize", e => (width = domSelectors.carousel.offsetWidth));
@@ -39,11 +45,11 @@ function scrollEvents() {
 
 // 
 
-function fetchAlbum() {
+function fetchAlbum(artist) {
 //     return fetchJsonp('https://itunes.apple.com/lookup?id=979458609&entity=album')
-    return fetch("https://itunes.apple.com/search?term=olivia+rodrigo&media=music&entity=album&attribute=artistTerm&limit=200")
+    return fetch(`https://itunes.apple.com/search?term=${artist}&media=music&entity=album&attribute=artistTerm&limit=200`)
         .then(res => res.json())
-            .then(json => console.log(json));
+            // .then(json => console.log(json.results));
 }
 
 // function fetchAlbum() {
@@ -54,12 +60,12 @@ function fetchAlbum() {
 //         )
 // }
 
-function createTemplateFromMovieArr(movieArr){
-    return movieArr.map(movie => {
+function createTemplateFromAlbumArr(albumArr, count){
+    return albumArr.map(album => {
       return `<div class="item">
-      <img src="${movie.imgUrl}" class="item__img" aria-label="Movie image">
-      <p><em>Movie: ${movie.name}</em></p>
-      <p><em>Info: ${movie.outlineInfo}</em></p>
+      <img src="${album.artworkUrl100}" class="item__img" aria-label="album image">
+      <p><em>Album: ${album.collectionName}</em></p>
+      <p><em>Artist: ${album.artistName}</em></p>
     </div>`
   }).join(" ")
 }
@@ -68,8 +74,58 @@ function renderTemplate(element, template) {
   element.innerHTML = template
 }
 
-fetchAlbum().then(movies => {
-    renderTemplate(domSelectors.content, createTemplateFromMovieArr(movies))
-})
+// fetchAlbum().then(albumJson => {
+//     const albums = albumJson.results
+//     const albumCount = albumJson.resultCount
+//     console.log(albums, albumCount)
+//     renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
+// })
 
 scrollEvents()
+
+// onchange event for input (Utilize later and replace onSubmit)
+function searchEvent() {
+    domSelectors.searchInput.addEventListener('change', (event) => {
+        event.preventDefault()
+    
+        const artistName = domSelectors.searchInput.value
+        const reformattedName = artistName.replaceAll(' ', '+')
+        console.log(reformattedName)
+    
+        // domSelectors.loader.innerHTML = loaderTemplate
+        domSelectors.loader.style.display = "inline"
+    
+        fetchAlbum(reformattedName).then(albumJson => {
+            const albums = albumJson.results
+            const albumCount = albumJson.resultCount
+            console.log(albums, albumCount)
+            renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
+        })
+    
+        domSelectors.loader.style.display = "none"
+    });
+}
+searchEvent()
+
+
+// Optimize later with on change.. AND event delegation
+// domSelectors.searchForm.addEventListener('submit', (event) => {
+//     event.preventDefault()
+
+//     const artistName = domSelectors.searchInput.value
+//     const reformattedName = artistName.replaceAll(' ', '+')
+//     console.log(reformattedName)
+
+//     loader.style.display = "inline"
+
+//     fetchAlbum(reformattedName).then(albumJson => {
+//         const albums = albumJson.results
+//         const albumCount = albumJson.resultCount
+//         console.log(albums, albumCount)
+//         renderTemplate(domSelectors.content, createTemplateFromAlbumArr(albums, albumCount))
+//     })
+
+//     loader.style.display = "none"
+// });
+
+// make function to show count 

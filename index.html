@@ -10,6 +10,11 @@
 <body>
     <div id="wrapper">
         <div id="carousel">
+            <form id="searchForm" class="search">
+                <input type="text" id="searchInput" class="search__input" name="artist-name" minlength="1">
+                <button type="submit" id="searchBtn" form="searchForm" class="search__btn">Search</button>
+                <div class="loader-container"><div id="loader" class="loader"></div></div>
+            </form>
           <div id="content">
             
           </div>
