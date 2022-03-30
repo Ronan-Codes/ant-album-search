@@ -10,6 +10,10 @@ body {
     font-family: sans-serif;
 }
 
+button {
+    cursor: pointer;
+}
+
 header {
     position: sticky;
     top: 0;
@@ -40,6 +44,7 @@ nav button {
 #wrapper {
     max-width: 80%;
     position: relative;
+    /* border-top: 5px solid rgb(0, 123, 184); */
 }
 
 #carousel {
@@ -90,6 +95,7 @@ nav button {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: .5rem;
     width: 100%;
+    margin-bottom: .5em;
 }
 
 .item {
@@ -115,22 +121,50 @@ nav button {
 .loader-container {
     display: flex;
     justify-content: center;
-    width: 10%;
+    align-items: center;
+    width: 80%;
     height: 50px;
-    margin-bottom: 1em;
+    /* padding: .5em 0 .5em 0; */
+    /* margin-bottom: 1em; */
 
-    border-bottom: 5px sollid rgb(0, 0, 0);
+    border-bottom: 5px solid rgb(0, 123, 184);
+    margin-bottom: 30px;
+    /* visibility: hidden; */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.load-more-btn {
     visibility: hidden;
+    background-color: rgb(3, 141, 210);
+    color: whitesmoke;
+    padding: .3em;
+    border: none;
+    border-radius: 5px;
+}
+
+.load-more-btn.display {
+    visibility: visible;
+}
+
+.loader-container__subheading {
+    font-size: 1em;
+    font-weight: 200;
 }
 
 .loader-container.display {
-    visibility: visible;
+    /* display: visible; */
+    display: flex;
 }
 
 .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
+    /* border-top: 16px solid #3498db; */
     width: 20px;
     height: 20px;
     -webkit-animation: spin 2s linear infinite;
@@ -164,7 +198,8 @@ nav button {
 .lds-dual-ring {
     display: inline-block;
     width: 80px;
-    height: 80px;
+    /* height: 80px; */
+    /* border: 5px solid black; */
 }
 
 .lds-dual-ring:after {

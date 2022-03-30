@@ -1,8 +1,14 @@
 const domSelectors = {
   content: document.getElementById("content"),
-  searchInput: document.getElementById("searchInput"),
+//   searchInput: document.getElementById("searchInput"),
   loader: document.querySelector(".loader-container"),
-  searchForm: document.getElementById("searchForm")
+  searchForm: document.getElementById("searchForm"),
+  loadMore: document.querySelector(".load-more-btn")
+}
+
+const subHeaderInnerHTML = {
+    searchArtist: `<h2 class="loader-container__subheading">Search Albums by Artist Name:</h2>`,
+    loaderHTML: `<div class="lds-dual-ring"></div>`,
 }
 
 const loaderTemplate = `<div id="loader" class="loader"></div>`
@@ -22,7 +28,7 @@ function createTemplateFromAlbumArr(albumArr){
   }).join(" ")
 }
 
-function renderTemplate(element, albumArr) {
+function renderTemplate(element, albumArr, albumCount) {
     element.innerHTML = createTemplateFromAlbumArr(albumArr)
 }
 
@@ -47,6 +53,11 @@ function searchEvent() {
 //     });
 // }
 
+// function getInputValue() {
+//     const reformattedArtistName = domSelectors.searchInput.value.replaceAll(' ', '+')
+//     return reformattedArtistName
+// }
+
 function formOnSubmit() {
     domSelectors.searchForm.addEventListener('submit', (event) => {
         event.preventDefault()
@@ -59,30 +70,38 @@ function formOnSubmit() {
             displayLoading()
 
             fetchAlbum(artistName).then(albumJson => {
-            const albums = albumJson.results
-            const albumCount = albumJson.resultCount
+            let albums = albumJson.results
+            let albumCount = albumJson.resultCount
+            let nameArtist = albumJson.results[0].artistName
+            console.log(albumJson)
+            let arrLength = 4
 
             if (!albumCount) {
                 alert("No albums found. Please try a different artist.")
             }
-            renderTemplate(domSelectors.content, albums)
+            renderTemplate(domSelectors.content, albums.slice(0,4), albumCount)
+
+            hideLoading(albumCount, nameArtist)
+            loadBtnVisible()
+
+            // Load Four More Functionality 
+            domSelectors.loadMore.addEventListener('click', (e) => {
+                e.preventDefault()
+
+                fourMoreAlbums = albums.slice(0, arrLength+4)
+                arrLength = arrLength+4
+                
+                renderTemplate(domSelectors.content, fourMoreAlbums, albumCount)
+        
+            })
+            // Load Four More End 
             })
             .catch((error) => {
                 alert(`${error}`);
             })
-            .finally(() => {
-                hideLoading()
-            })
         }
-
-        
     });
 }
-
-// function getInputValue() {
-//     const reformattedArtistName = domSelectors.searchInput.value.replaceAll(' ', '+')
-//     return reformattedArtistName
-// }
 
 function getChildInputValue(parentElement){
     // let artistName = parentElement.firstChild.nextSibling.value
@@ -92,11 +111,15 @@ function getChildInputValue(parentElement){
 }
 
 function displayLoading() {
-    domSelectors.loader.classList.add("display");
+    domSelectors.loader.innerHTML = subHeaderInnerHTML.loaderHTML
 }
 
-function hideLoading() {
-    domSelectors.loader.classList.remove("display");
+function hideLoading(albumCount, artistName) {
+    domSelectors.loader.innerHTML = `<h2 class="loader-container__subheading">${albumCount} results for "${artistName}"</h2>`
+}
+
+function loadBtnVisible() {
+    domSelectors.loadMore.classList.add("display")
 }
 
 searchEvent()
