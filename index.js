@@ -1,10 +1,44 @@
 const domSelectors = {
   content: document.getElementById("content"),
-//   searchInput: document.getElementById("searchInput"),
-  loader: document.querySelector(".loader-container"),
-  searchForm: document.getElementById("searchForm"),
-  loadMore: document.querySelector(".load-more-btn")
 }
+
+// rQuery
+class RQuery {
+    constructor(selector) {
+        this.elements = document.querySelectorAll(selector);
+    }
+    on(eventType, cb) {
+        this.elements.forEach(element => {
+            element.addEventListener(eventType, cb)
+        })
+    }
+    html(innerHTML) {
+        this.elements.forEach(element => {
+            element.innerHTML = innerHTML
+        })
+    }
+    hide() {
+        this.elements.forEach(element => {
+            element.previousDisplay = element.style.display
+            element.style.setProperty('display', 'none')
+        })
+    }
+    show() {
+        this.elements.forEach(element => {
+            element.style.setProperty('display', element.previousDisplay)
+        })
+    }
+}
+
+const $$ = (selector) => {
+    return new RQuery(selector)
+}
+
+$$.ajax = async ({url}) => {
+    return fetch(url)
+            .then(res => res.json())
+}
+// RQuery end
 
 const subHeaderInnerHTML = {
     searchArtist: `<h2 class="loader-container__subheading">Search Albums by Artist Name:</h2>`,
@@ -14,8 +48,15 @@ const subHeaderInnerHTML = {
 const loaderTemplate = `<div id="loader" class="loader"></div>`
 
 function fetchAlbum(artist) {
-    return fetch(`https://itunes.apple.com/search?term=${artist}&media=music&entity=album&attribute=artistTerm&limit=200`)
-        .then(res => res.json())
+    return $$.ajax({
+        url: `https://itunes.apple.com/search?term=${artist}&media=music&entity=album&attribute=artistTerm&limit=200`,
+        success: function (result) {
+            console.log(result)
+        }
+    })
+
+    // return fetch(`https://itunes.apple.com/search?term=${artist}&media=music&entity=album&attribute=artistTerm&limit=200`)
+    //     .then(res => res.json())
 }
 
 function createTemplateFromAlbumArr(albumArr){
@@ -59,7 +100,7 @@ function searchEvent() {
 // }
 
 function formOnSubmit() {
-    domSelectors.searchForm.addEventListener('submit', (event) => {
+    $$('#searchForm').on('submit', event => {
         event.preventDefault()
         let inputValue = getChildInputValue(event.target)
         let artistName = inputValue? inputValue : null
@@ -73,7 +114,7 @@ function formOnSubmit() {
             let albums = albumJson.results
             let albumCount = albumJson.resultCount
             let nameArtist = albumJson.results[0].artistName
-            console.log(albumJson)
+            // console.log(albumJson)
             let arrLength = 4
 
             if (!albumCount) {
@@ -85,22 +126,25 @@ function formOnSubmit() {
             loadBtnVisible()
 
             // Load Four More Functionality 
-            domSelectors.loadMore.addEventListener('click', (e) => {
+            $$('.load-more-btn').on('click', function(e) {
                 e.preventDefault()
 
                 fourMoreAlbums = albums.slice(0, arrLength+4)
                 arrLength = arrLength+4
                 
                 renderTemplate(domSelectors.content, fourMoreAlbums, albumCount)
-        
             })
+            
             // Load Four More End 
             })
             .catch((error) => {
                 alert(`${error}`);
             })
         }
-    });
+    })
+
+    
+    
 }
 
 function getChildInputValue(parentElement){
@@ -110,16 +154,17 @@ function getChildInputValue(parentElement){
     return reformattedArtistName
 }
 
+let loaderContainer = $$(".loader-container")
 function displayLoading() {
-    domSelectors.loader.innerHTML = subHeaderInnerHTML.loaderHTML
+    loaderContainer.html(subHeaderInnerHTML.loaderHTML)
 }
-
 function hideLoading(albumCount, artistName) {
-    domSelectors.loader.innerHTML = `<h2 class="loader-container__subheading">${albumCount} results for "${artistName}"</h2>`
+    loaderContainer.html(`<h2 class="loader-container__subheading">${albumCount} results for "${artistName}"</h2>`)
 }
 
+$$(".load-more-btn").hide()
 function loadBtnVisible() {
-    domSelectors.loadMore.classList.add("display")
+    $$(".load-more-btn").show()
 }
 
 searchEvent()

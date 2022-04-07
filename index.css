@@ -32,10 +32,37 @@ header nav {
     justify-content: center;
 }
 
+.search__btn {
+    /* height: 10px; */
+    background-color: white;
+    background: none;
+    border: none;
+    /* padding: .3em; */
+    color: rgb(198, 198, 198);
+    padding: 0;
+    /* margin: 0; */
+}
+
+.search img {
+    height: 1em;
+    /* width: 1em; */
+}
+
+.search {
+    display: flex;
+    border-radius: 32px;
+    background-color: white;
+}
+
 nav input {
     border: none;
     width: 60%;
+    padding: 0 1em;
+    border-radius: 32px;
+    font-size: 1em;
 }
+
+nav input:focus { outline: none; }
 
 nav button {
     width: 20%;
@@ -139,16 +166,11 @@ nav button {
 }
 
 .load-more-btn {
-    visibility: hidden;
     background-color: rgb(3, 141, 210);
     color: whitesmoke;
     padding: .3em;
     border: none;
     border-radius: 5px;
-}
-
-.load-more-btn.display {
-    visibility: visible;
 }
 
 .loader-container__subheading {
@@ -233,5 +255,9 @@ nav button {
     #content {
         
         grid-template-columns: 1fr 1fr;
+    }
+
+    nav input {
+        font-size: .7em;
     }
 }
